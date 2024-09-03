@@ -301,4 +301,5 @@ class File(page.Page):
                             + warning
                             + " "
                             + res["upload"]["warnings"][warning]
+                        )
         return res
