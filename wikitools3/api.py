@@ -415,6 +415,10 @@ def urlencode(query, doseq=0):
             elif isinstance(v, (int, float)):
                 v = quote_plus(str(v))
                 l.append(f"{k}={v}")
+            elif isinstance(v, (bytes, bytearray)):
+                # handle bytes for python3
+                v = quote_plus(v.encode("utf8", "replace"))
+                l.append(f"{k}={v}")
             elif hasattr(v, 'type') and v.type(str):                
 
                 # is there a reasonable way to convert to ASCII?
