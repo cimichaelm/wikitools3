@@ -722,7 +722,9 @@ class Page(object):
             self.title = result["move"]["to"]
             self.namespace = namespaceDetect(self.title, self.site)
             if self.namespace != 0:
-                self.unprefixedtitle = self.title.split(":", 1)[1]
+                tmpa = self.title.decode()
+                tmpb = tmpa.split(":", 1)
+                self.unprefixedtitle = tmpb[1]                
             else:
                 self.unprefixedtitle = self.title
             if not isinstance(self.title, str):
