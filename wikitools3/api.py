@@ -415,7 +415,7 @@ def urlencode(query, doseq=0):
             elif isinstance(v, (int, float)):
                 v = quote_plus(str(v))
                 l.append(f"{k}={v}")
-            elif v.type(str): # TODO: .type() broken for python 3
+            elif hasattr(v, 'type') and v.type(str):                
 
                 # is there a reasonable way to convert to ASCII?
                 # encode generates a string, but "replace" or "ignore"
