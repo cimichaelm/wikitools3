@@ -91,7 +91,7 @@ class File(page.Page):
         req = api.APIRequest(self.site, params)
         self.filehistory = []
         for data in req.queryGen():
-            pid = data["query"]["pages"].keys()[0]
+            pid = list(data["query"]["pages"].keys())[0]
             self.filehistory.extend(iter(data["query"]["pages"][pid]["imageinfo"]))
         return self.filehistory
 
@@ -214,7 +214,7 @@ class File(page.Page):
                 params["pageids"] = self.pageid
         req = api.APIRequest(self.site, params)
         res = req.query(False)
-        key = res["query"]["pages"].keys()[0]
+        key = list(res["query"]["pages"].keys())[0]
         url = res["query"]["pages"][key]["imageinfo"][0]["url"]
         if not location:
             location = self.title.split(":", 1)[1]
@@ -285,7 +285,7 @@ class File(page.Page):
                 self.templates = []
                 self.exists = True
             elif res["upload"]["result"] == "Warning":
-                for warning in res["upload"]["warnings"].keys():
+                for warning in list(res["upload"]["warnings"].keys()):
                     if warning == "duplicate":
                         print(
                             "File is a duplicate of "
@@ -301,5 +301,4 @@ class File(page.Page):
                             + warning
                             + " "
                             + res["upload"]["warnings"][warning]
-                        )
         return res
