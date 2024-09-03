@@ -296,10 +296,7 @@ class File(page.Page):
                             "Page already exists: " + res["upload"]["warnings"][warning]
                         )
                     else:
-                        print(
-                            "Warning: "
-                            + warning
-                            + " "
-                            + res["upload"]["warnings"][warning]
-                        )
+                        msg = "Warning: {0} {1}".format(warning,res["upload"]["warnings"][warning])
+                        print(msg)
+
         return res
