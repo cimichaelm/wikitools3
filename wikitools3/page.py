@@ -116,7 +116,7 @@ class Page(object):
         if self.title:
             self.title = self.title.replace("_", " ")
         if self.namespace:
-            if namespace not in self.site.namespaces.keys():
+            if namespace not in list(self.site.namespaces.keys()):
                 raise BadNamespace(namespace)
             if self.title:
                 self.unprefixedtitle = self.title
@@ -197,7 +197,7 @@ class Page(object):
         recheck - redo pageinfo checks
 
         """
-        if newns not in self.site.namespaces.keys():
+        if newns not in list(self.site.namespaces.keys()):
             raise BadNamespace
         if self.namespace == newns:
             return self.namespace
@@ -361,7 +361,7 @@ class Page(object):
         req = api.APIRequest(self.site, params)
         response = req.query(False)
         if self.pageid == 0:
-            self.pageid = int(response["query"]["pages"].keys()[0])
+            self.pageid = int(list(response["query"]["pages"].keys())[0])
             if self.pageid == -1:
                 self.exists == False
                 raise NoPage
@@ -414,7 +414,7 @@ class Page(object):
         }
         req = api.APIRequest(self.site, params)
         response = req.query(False)
-        for pr in response["query"].values()[0].values()[0]["protection"]:
+        for pr in list(response["query"].values())[0].values()[0]["protection"]:
             if pr["level"]:
                 if pr["expiry"] == "infinity":
                     expiry = "infinity"
@@ -565,7 +565,7 @@ class Page(object):
             params["rvcontinue"] = rvcontinue["rvcontinue"]
         req = api.APIRequest(self.site, params)
         response = req.query(False)
-        id = response["query"]["pages"].keys()[0]
+        id = list(response["query"]["pages"].keys())[0]
         if not self.pageid:
             self.pageid = int(id)
         revs = response["query"]["pages"][id]["revisions"]
@@ -575,7 +575,7 @@ class Page(object):
     def __extractToList(self, json, stuff):
         list = []
         if self.pageid == 0:
-            self.pageid = json["query"]["pages"].keys()[0]
+            self.pageid = list(json["query"]["pages"].keys())[0]
         if stuff in json["query"]["pages"][str(self.pageid)]:
             list.extend(
                 item["title"]
