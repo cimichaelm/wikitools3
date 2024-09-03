@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wikitools3"
-version = "3.0.1"
+version = "3.0.2"
 description = "Python package for interacting with a MediaWiki wiki. It is used by WikiTeam for archiving MediaWiki wikis."
 authors = ["Alex Zaddach <mrzmanwiki@gmail.com>", "Elsie Hupp <wikitools3@elsiehupp.com>"]
 maintainers = ["Elsie Hupp <wikitools3@elsiehupp.com>"]
