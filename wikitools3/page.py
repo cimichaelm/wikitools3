@@ -182,7 +182,9 @@ class Page(object):
             )
             self.namespace = int(response["query"]["pages"][str(self.pageid)]["ns"])
             if self.namespace != 0:
-                self.unprefixedtitle = self.title.split(":", 1)[1]
+                tmpa = self.title.decode()
+                tmpb = tmpa.split(":", 1)
+                self.unprefixedtitle = tmpb[1]                
             else:
                 self.unprefixedtitle = self.title
         self.pageid = int(self.pageid)
