@@ -89,6 +89,8 @@ class APIRequest:
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Content-Length": str(len(self.encodeddata)),
             }
+        # encode to bytes before sending to urllib request
+        self.encodeddata = self.encodeddata.encode('utf-8')
         self.headers["User-agent"] = wiki.useragent
         if gzip:
             self.headers["Accept-Encoding"] = "gzip"
