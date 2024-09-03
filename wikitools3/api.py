@@ -26,7 +26,7 @@ import copy
 import re
 import sys
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import urllib.request
 import warnings
 from urllib.parse import quote_plus
@@ -215,14 +215,14 @@ for queries requring multiple requests""",
         total = initialdata
         res = initialdata
         params = self.data
-        numkeys = len(res["query-continue"].keys())
+        numkeys = len(list(res["query-continue"].keys()))
         while numkeys > 0:
             key1 = ""
             key2 = ""
-            possiblecontinues = res["query-continue"].keys()
+            possiblecontinues = list(res["query-continue"].keys())
             if len(possiblecontinues) == 1:
                 key1 = possiblecontinues[0]
-                keylist = res["query-continue"][key1].keys()
+                keylist = list(res["query-continue"][key1].keys())
                 if len(keylist) == 1:
                     key2 = keylist[0]
                 else:
@@ -234,7 +234,7 @@ for queries requring multiple requests""",
                         key2 = keylist[0]
             else:
                 for posskey in possiblecontinues:
-                    keylist = res["query-continue"][posskey].keys()
+                    keylist = list(res["query-continue"][posskey].keys())
                     for key in keylist:
                         if len(key) < 11:
                             key1 = posskey
@@ -244,7 +244,7 @@ for queries requring multiple requests""",
                         break
                 else:
                     key1 = possiblecontinues[0]
-                    key2 = res["query-continue"][key1].keys()[0]
+                    key2 = list(res["query-continue"][key1].keys())[0]
             if isinstance(res["query-continue"][key1][key2], int):
                 cont = res["query-continue"][key1][key2]
             else:
@@ -260,7 +260,7 @@ for queries requring multiple requests""",
             res = req.query(False)
             for type in possiblecontinues:
                 total = resultCombine(type, total, res)
-            numkeys = len(res["query-continue"].keys()) if "query-continue" in res else 0
+            numkeys = len(list(res["query-continue"].keys())) if "query-continue" in res else 0
         return total
 
     def __getRaw(self):
@@ -306,10 +306,10 @@ for queries requring multiple requests""",
                 content = None
                 if isinstance(parsed, dict):
                     content = APIResult(parsed)
-                    content.response = self.response.items()
+                    content.response = list(self.response.items())
                 elif isinstance(parsed, list):
                     content = APIListResult(parsed)
-                    content.response = self.response.items()
+                    content.response = list(self.response.items())
                 else:
                     content = parsed
                 if "error" in content:
@@ -357,7 +357,7 @@ def resultCombine(type, old, new):
     if type in new["query"]:  # Basic list, easy
         ret["query"][type].extend(new["query"][type])
     else:  # Else its some sort of prop=thing and/or a generator query
-        for key in new["query"]["pages"].keys():  # Go through each page
+        for key in list(new["query"]["pages"].keys()):  # Go through each page
             if key not in old["query"]["pages"]:  # if it only exists in the new one
                 ret["query"]["pages"][key] = new["query"]["pages"][
                     key
@@ -382,7 +382,7 @@ def urlencode(query, doseq=0):
     """
     if hasattr(query, "items"):
         # mapping objects
-        query = query.items()
+        query = list(query.items())
     else:
         # it's a bother at times that strings and string-like objects are
         # sequences...
