@@ -158,7 +158,7 @@ class Wiki:
                 UserWarning,
                 "WARNING: Some features may not work on older versions of MediaWiki",
             )
-        if "tokens" in info["query"].keys():
+        if "tokens" in list(info["query"].keys()):
             self.newtoken = True
         return self
 
@@ -371,11 +371,11 @@ class Wiki:
             req = api.APIRequest(self, params)
             response = req.query(False)
             if response.get("data", False):
-                pid = response["data"]["query"]["pages"].keys()[0]
+                pid = list(response["data"]["query"]["pages"].keys())[0]
                 token = response["query"]["pages"][pid]["edittoken"]
             else:
                 pages = response["query"]["pages"]
-                token = pages.itervalues().next()["edittoken"]
+                token = iter(pages.values()).next()["edittoken"]
         return token
 
     def __hash__(self):
